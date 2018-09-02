@@ -4,10 +4,10 @@ import pl.sdacademy.vending.model.VendingMachine;
 
 public class CustomerOperationController {
 
-    private VendingMachine machine;
+    private final VendingMachine machine;
 
-    public CustomerOperationController() {
-        machine = new VendingMachine();
+    public CustomerOperationController(VendingMachine machine) {
+        this.machine = machine;
     }
 
     public void printMachine() {
