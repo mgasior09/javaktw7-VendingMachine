@@ -1,10 +1,8 @@
 package pl.sdacademy.vending.util;
-
 import org.junit.Test;
-
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
 public class PropertiesFileConfigurationTest {
+
 
     @Test
     public void shouldReturnTextPropertyFromConfiguration() {
@@ -20,7 +18,7 @@ public class PropertiesFileConfigurationTest {
     @Test
     public void shouldReturnDefaultProperty() {
         //given
-        PropertiesFileConfiguration propertiesFileConfiguration =PropertiesFileConfiguration.getInstance();
+        PropertiesFileConfiguration propertiesFileConfiguration = PropertiesFileConfiguration.getInstance();
         String propertyName = "aaaaa";
         //when
         String retrievedValue = propertiesFileConfiguration.getProperty(propertyName, "DEFAULT_NAME");
@@ -31,7 +29,7 @@ public class PropertiesFileConfigurationTest {
     @Test
     public void shouldReturnDefaultLongNumber() {
         //given
-        PropertiesFileConfiguration propertiesFileConfiguration =PropertiesFileConfiguration.getInstance();
+        PropertiesFileConfiguration propertiesFileConfiguration = PropertiesFileConfiguration.getInstance();
         String propertyName = "bbbbb";
         //when
         Long retrievedValue = propertiesFileConfiguration.getProperty(propertyName, 100L);

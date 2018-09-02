@@ -6,6 +6,7 @@ import pl.sdacademy.vending.util.Configuration;
 import pl.sdacademy.vending.util.PropertiesFileConfiguration;
 
 public class Application {
+
     private final CustomerOperationController customerOperationController;
 
     public Application() {
@@ -17,5 +18,4 @@ public class Application {
     public void start() {
         customerOperationController.printMachine();
     }
-
 }
