@@ -28,11 +28,11 @@ public class VendingMachineTest {
         // oraz przekaże jako pierwszy parametr wartość równą wartości zapisanej w PARAM_NAME_COLS, a jako drugi parametr
         // dowolną wartość typu LONG, to zwróć wartość 8.
         when(mockedConfig.getProperty(eq(PARAM_NAME_COLS), anyLong()))
-                .thenReturn(8L);
+                .thenReturn(9L);
         // definicja zachowania w chwili, gdy ktoś chce pobrać wartość dla PARAM_NAME_ROWS. Metody eq() oraz anyLong() są
         // nazywane Matcherami, czyli "wzorcami dopasowania"
         when(mockedConfig.getProperty(eq(PARAM_NAME_ROWS), anyLong()))
-                .thenReturn(14L);
+                .thenReturn(26L);
 
         // when
         // utowrzenie testowego automatu sprzedającego, do któego przekazujemy sztuczną konfigurację.
@@ -40,8 +40,8 @@ public class VendingMachineTest {
 
         // then
         // sprawdzenie, czy automat używa przekazanej przez nas konfiguracji.
-        assertEquals((Long) 8L, testedMachine.colsSize());
-        assertEquals((Long) 14L, testedMachine.rowsSize());
+        assertEquals((Long) 9L, testedMachine.colsSize());
+        assertEquals((Long) 26L, testedMachine.rowsSize());
     }
 
     // w adnotacji Test definiujemy, jaki wyjątek powinien zostać wyrzucony.

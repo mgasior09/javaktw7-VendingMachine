@@ -9,7 +9,7 @@ public class VendingMachine {
     public VendingMachine(Configuration configuration) throws IllegalArgumentException {
         Long propertyRows = configuration.getProperty("machine.size.rows", 6L);
         Long propertyCols = configuration.getProperty("machine.size.cols", 4L);
-        if (propertyRows >= 27L || propertyRows < 1 || propertyCols >= 10 || propertyCols < 1) {
+        if (propertyRows > 26L || propertyRows < 1 || propertyCols > 9 || propertyCols < 1) {
             throw new IllegalArgumentException();
         }
         this.configuration = configuration;
