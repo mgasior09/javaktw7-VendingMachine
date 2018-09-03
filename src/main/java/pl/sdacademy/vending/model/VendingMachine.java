@@ -6,17 +6,29 @@ public class VendingMachine {
 
     private final Configuration configuration;
 
-    public VendingMachine(Configuration configuration) {
+    public VendingMachine(Configuration configuration) throws IllegalArgumentException {
+        Long propertyRows = configuration.getProperty("machine.size.rows", 6L);
+        Long propertyCols = configuration.getProperty("machine.size.cols", 4L);
+        if (propertyRows >= 27L || propertyRows < 1 || propertyCols >= 10 || propertyCols < 1) {
+            throw new IllegalArgumentException();
+        }
         this.configuration = configuration;
+
     }
 
     public Long rowsSize() {
-        return configuration.getProperty("machine.size.rows", 6L);
+        Long property = configuration.getProperty("machine.size.rows", 6L);
+        return property;
+
     }
 
     public Long colsSize() {
-        return configuration.getProperty("machine.size.cols", 4L);
+
+        Long property = configuration.getProperty("machine.size.cols", 4L);
+
+        return property;
     }
-
-
 }
+
+
+
