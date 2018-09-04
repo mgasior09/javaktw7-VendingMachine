@@ -6,7 +6,7 @@ public class VendingMachine {
 
     private final Configuration configuration;
 
-    public VendingMachine(Configuration configuration) throws IllegalArgumentException {
+    public VendingMachine(Configuration configuration) {
         Long propertyRows = configuration.getProperty("machine.size.rows", 6L);
         Long propertyCols = configuration.getProperty("machine.size.cols", 4L);
         if (propertyRows > 26L || propertyRows < 1 || propertyCols > 9 || propertyCols < 1) {
