@@ -3,6 +3,7 @@ package pl.sdacademy.vending.model;
 import pl.sdacademy.vending.util.Configuration;
 
 import java.util.Optional;
+import java.util.Random;
 
 public class VendingMachine {
 
@@ -27,10 +28,29 @@ public class VendingMachine {
     }
 
     private Tray createTrayForPosition(int row, int col) {
+        if (!shouldGenerateTray()) {
+            return null;
+        }
         char rowSymbol = (char) ('A' + row);
         int columnSymbol = col + 1;
         String symbol = "" + rowSymbol + columnSymbol;
-        return new Tray(symbol, 0L);
+        Random random = new Random();
+        int generatedPrice = random.nextInt(401);
+        int calculatedPrice = generatedPrice + 100;
+        double productProbability = Math.random();
+        if (productProbability < 0.1) {
+            Product product1 = Product.builder("Product " + symbol).build();
+            Product product2 = Product.builder("Product " + symbol).build();
+            return Tray.builder(symbol).setPrice((long) calculatedPrice).setProducts(product1).setProducts(product2).build();
+        } else if (productProbability < 0.5) {
+            Product product1 = Product.builder("Product " + symbol).build();
+            return Tray.builder(symbol).setPrice((long) calculatedPrice).setProducts(product1).build();
+        }
+        return Tray.builder(symbol).setPrice((long) calculatedPrice).build();
+    }
+
+    private boolean shouldGenerateTray() {
+        return Math.random() < 0.8;
     }
 
     public Long rowsSize() {

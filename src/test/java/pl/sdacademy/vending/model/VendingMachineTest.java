@@ -108,17 +108,4 @@ public class VendingMachineTest {
         new VendingMachine(mockedConfig);
     }
 
-    @Test
-    public void shouldReturnExistingTray() {
-        //given
-        Configuration mockedConfig = mock(Configuration.class);
-        when(mockedConfig.getProperty(eq(PARAM_NAME_COLS), anyLong()))
-                .thenReturn(9L);
-        when(mockedConfig.getProperty(eq(PARAM_NAME_ROWS), anyLong()))
-                .thenReturn(9L);
-        VendingMachine testMachine = new VendingMachine(mockedConfig);
-        Optional<Tray> tray = testMachine.trayDetailsAtPosition(0, 0);
-        assertEquals("A1", tray.map(Tray::getTraySymbol).orElse("--"));
-
-    }
 }
