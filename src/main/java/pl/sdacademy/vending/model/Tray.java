@@ -1,6 +1,7 @@
 package pl.sdacademy.vending.model;
 
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.Queue;
 
 public class Tray {
@@ -15,15 +16,26 @@ public class Tray {
         this.products = builder.products;
     }
 
+    public static Builder builder(String traySymbol) {
+        return new Builder(traySymbol);
+    }
+
     public String getTraySymbol() {
         return traySymbol;
     }
+
     public Long getPrice() {
         return price;
     }
 
-    public static Builder builder(String traySymbol) {
-        return new Builder(traySymbol);
+    public Optional<String> firstProductName() {
+        Product firstProduct = products.peek();
+        Optional<String> optionalFirstProductName = Optional.ofNullable(firstProduct).map(Product::getName);
+        return optionalFirstProductName;
+    }
+
+    public Optional<Product> getFirstProduct() {
+        return Optional.ofNullable(products.poll());
     }
 
     public static class Builder {

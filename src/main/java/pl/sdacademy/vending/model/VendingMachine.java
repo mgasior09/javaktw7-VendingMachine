@@ -68,6 +68,33 @@ public class VendingMachine {
         Optional<Tray> tray = Optional.ofNullable(obtainedTray);
         return tray;
     }
+
+    public Optional<String> productNameAtPosition(int rowNumber, int colNumber) {
+        Tray tray = trays[rowNumber][colNumber];
+        if (tray != null) {
+            return tray.firstProductName();
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<Product> buyProductWithSymbol(String traySymbol) {
+        Optional<Tray> trayForSymbol = getTrayForSymbol(traySymbol);
+        if (trayForSymbol.isPresent()) {
+            Tray tray = trayForSymbol.get();
+            return tray.getFirstProduct();
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    private Optional<Tray> getTrayForSymbol(String traySymbol) {
+        char rowSymbol = traySymbol.charAt(0);
+        char colSymbol = traySymbol.charAt(1);
+        int rowNumber = rowSymbol - 'A';
+        int colNumber = colSymbol - '1';
+        return trayDetailsAtPosition(rowNumber, colNumber);
+    }
 }
 
 

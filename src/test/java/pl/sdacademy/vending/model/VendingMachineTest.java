@@ -39,7 +39,6 @@ public class VendingMachineTest {
         // when
         // utowrzenie testowego automatu sprzedającego, do któego przekazujemy sztuczną konfigurację.
         VendingMachine testedMachine = new VendingMachine(mockedConfig);
-
         // then
         // sprawdzenie, czy automat używa przekazanej przez nas konfiguracji.
         assertEquals((Long) 9L, testedMachine.colsSize());
