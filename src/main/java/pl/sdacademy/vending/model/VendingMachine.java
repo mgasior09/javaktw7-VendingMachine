@@ -2,11 +2,12 @@ package pl.sdacademy.vending.model;
 
 import pl.sdacademy.vending.util.Configuration;
 
+import java.io.Serializable;
 import java.util.Optional;
 import java.util.Random;
 
-public class VendingMachine {
-
+public class VendingMachine implements Serializable {
+    public static final long serialVersionUID = 1L;
     private final Configuration configuration;
     private final Tray[][] trays;
     private final Long maxRowsSize;
@@ -20,6 +21,9 @@ public class VendingMachine {
         }
         this.configuration = configuration;
         trays = new Tray[maxRowsSize.intValue()][maxColsSize.intValue()];
+    }
+
+    public void init() {
         for (int rowNumber = 0; rowNumber < maxRowsSize; rowNumber++) {
             for (int colNumber = 0; colNumber < maxColsSize; colNumber++) {
                 trays[rowNumber][colNumber] = createTrayForPosition(rowNumber, colNumber);
@@ -89,11 +93,34 @@ public class VendingMachine {
     }
 
     private Optional<Tray> getTrayForSymbol(String traySymbol) {
-        char rowSymbol = traySymbol.charAt(0);
-        char colSymbol = traySymbol.charAt(1);
+        return trayDetailsAtPosition(getRowNumberForSymbol(traySymbol), getColNumberForSymbol(traySymbol));
+    }
+
+    private int getRowNumberForSymbol(String traySymbol) {
+        char rowSymbol = traySymbol.toUpperCase().charAt(0);
         int rowNumber = rowSymbol - 'A';
+        return rowNumber;
+    }
+
+    private int getColNumberForSymbol(String traySymbol) {
+        char colSymbol = traySymbol.charAt(1);
         int colNumber = colSymbol - '1';
-        return trayDetailsAtPosition(rowNumber, colNumber);
+        return colNumber;
+    }
+
+    public boolean placeTray(Tray tray) {
+        try {
+            String traySymbol = tray.getTraySymbol();
+            int rowNumber = getRowNumberForSymbol(traySymbol);
+            int colNumber = getColNumberForSymbol(traySymbol);
+            if (trays[rowNumber][colNumber] == null) {
+                trays[rowNumber][colNumber] = tray;
+                return true;
+            }
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
+        return false;
     }
 }
 

@@ -2,10 +2,11 @@ package pl.sdacademy.vending.model;
 
 import org.junit.Test;
 import pl.sdacademy.vending.util.Configuration;
+import pl.sdacademy.vending.util.PropertiesFileConfiguration;
 
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -13,7 +14,6 @@ import static org.mockito.Mockito.when;
 
 
 public class VendingMachineTest {
-
 
     // nazwa parametru ilości rzędów
     private static final String PARAM_NAME_COLS = "machine.size.cols";
@@ -63,7 +63,6 @@ public class VendingMachineTest {
         new VendingMachine(mockedConfig);
     }
 
-    // w adnotacji Test definiujemy, jaki wyjątek powinien zostać wyrzucony.
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionWhenThereAreTooFewRows() {
         // given
@@ -90,7 +89,6 @@ public class VendingMachineTest {
         new VendingMachine(mockedConfig);
     }
 
-
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionWhenThereAreTooFewCols() {
         // given
@@ -107,4 +105,55 @@ public class VendingMachineTest {
         new VendingMachine(mockedConfig);
     }
 
+    @Test
+    public void shouldBeAbleToAddTrayToEmptyMachine() {
+        //given
+        VendingMachine machine = new VendingMachine(PropertiesFileConfiguration.getInstance());
+        Tray tray = Tray.builder("B2").build();
+
+        //when
+        boolean successfullyAdded = machine.placeTray(tray);
+
+        //then
+        assertTrue(successfullyAdded);
+        Optional<Tray> obtainedTray = machine.trayDetailsAtPosition(1, 1);
+        assertTrue(obtainedTray.isPresent());
+        Tray trayFromMachine = obtainedTray.get();
+        assertEquals("B2", trayFromMachine.getTraySymbol());
+    }
+
+    @Test
+    public void shouldNotBeAbleToAddTrayToNotEmptyMachine() {
+        //given
+        VendingMachine machine = new VendingMachine(PropertiesFileConfiguration.getInstance());
+        Tray firstTray = Tray.builder("B2").build();
+        Tray secondTray = Tray.builder("B2").build();
+
+        //when
+        machine.placeTray(firstTray);
+        boolean unsuccessfullyAdded = machine.placeTray(secondTray);
+
+        //then
+        assertFalse(unsuccessfullyAdded);
+        Optional<Tray> obtainedTray = machine.trayDetailsAtPosition(1, 1);
+        assertTrue(obtainedTray.isPresent());
+        Tray trayFromMachine = obtainedTray.get();
+        assertEquals("B2", trayFromMachine.getTraySymbol());
+
+    }
+
+    @Test
+    public void shouldNotBeAbleToAddTrayOnNotExistingPosition() {
+        //given
+        VendingMachine machine = new VendingMachine(PropertiesFileConfiguration.getInstance());
+        Tray tray = Tray.builder("A0").build();
+
+        //when
+        machine.placeTray(tray);
+        boolean placementResult = machine.placeTray(tray);
+
+        //than
+        assertFalse(placementResult);
+
+    }
 }

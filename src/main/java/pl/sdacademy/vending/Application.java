@@ -17,6 +17,7 @@ public class Application {
     public Application() {
         Configuration configuration = PropertiesFileConfiguration.getInstance();
         machine = new VendingMachine(configuration);
+        machine.init();
         customerOperationController = new CustomerOperationController(machine);
     }
 
@@ -63,8 +64,10 @@ public class Application {
         System.out.print("Choose product: ");
         Scanner userInput = new Scanner(System.in);
         String userSelection = userInput.nextLine();
-        Optional<Product> boughtProduct = machine.buyProductWithSymbol(userSelection);
+        Optional<Product> boughtProduct = customerOperationController.buyProduct(userSelection);
         customerOperationController.buyProduct(userSelection);
         System.out.println(boughtProduct.map(Product::getName).orElse("Sold out"));
     }
+
+
 }
