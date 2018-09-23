@@ -1,8 +1,12 @@
 package pl.sdacademy.vending;
 
 import pl.sdacademy.vending.controller.CustomerOperationController;
+import pl.sdacademy.vending.controller.EmployeeController;
 import pl.sdacademy.vending.model.Product;
 import pl.sdacademy.vending.model.VendingMachine;
+import pl.sdacademy.vending.repository.HardDriveVendingMachineRepository;
+import pl.sdacademy.vending.service.DefaultEmployeeService;
+import pl.sdacademy.vending.service.repositories.VendingMachineRepository;
 import pl.sdacademy.vending.util.Configuration;
 import pl.sdacademy.vending.util.PropertiesFileConfiguration;
 
@@ -13,12 +17,16 @@ public class Application {
 
     private final CustomerOperationController customerOperationController;
     private final VendingMachine machine;
+    private final EmployeeController employeeController;
 
     public Application() {
         Configuration configuration = PropertiesFileConfiguration.getInstance();
         machine = new VendingMachine(configuration);
         machine.init();
+        VendingMachineRepository vendingMachineRepository = new HardDriveVendingMachineRepository(configuration);
         customerOperationController = new CustomerOperationController(machine);
+        DefaultEmployeeService defaultEmployeeService = new DefaultEmployeeService(vendingMachineRepository, configuration);
+        employeeController = new EmployeeController(defaultEmployeeService);
     }
 
     public void start() {
@@ -68,6 +76,4 @@ public class Application {
         customerOperationController.buyProduct(userSelection);
         System.out.println(boughtProduct.map(Product::getName).orElse("Sold out"));
     }
-
-
 }

@@ -11,19 +11,18 @@ public class HardDriveVendingMachineRepository implements VendingMachineReposito
     private final String fileLocalisation;
 
     public HardDriveVendingMachineRepository(Configuration config) {
-        fileLocalisation = config.getProperty("repository.location.vendingMachine", "venMach.ser");
+        fileLocalisation = config.getProperty("repository.location.vendingMachine", "VenMach.ser");
     }
 
     @Override
     public VendingMachine save(VendingMachine machine) {
-        try {
-            ObjectOutputStream outputVendingMachine = new ObjectOutputStream(new FileOutputStream(fileLocalisation));
+        try (ObjectOutputStream outputVendingMachine = new ObjectOutputStream(new FileOutputStream(fileLocalisation))) {
             outputVendingMachine.writeObject(machine);
-        } catch (
-                IOException e) {
+            return machine;
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return machine;
+        return null;
     }
 
     @Override
