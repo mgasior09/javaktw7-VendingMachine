@@ -68,6 +68,7 @@ public class Application {
                     employeeController.removeTray();
                     break;
                 case 3:
+                    employeeController.addProduct();
                     break;
                 case 4:
                     break;
@@ -112,7 +113,6 @@ public class Application {
         Scanner userInput = new Scanner(System.in);
         String userSelection = userInput.nextLine();
         Optional<Product> boughtProduct = customerOperationController.buyProduct(userSelection);
-        customerOperationController.buyProduct(userSelection);
         System.out.println(boughtProduct.map(Product::getName).orElse("Sold out"));
     }
 }

@@ -172,4 +172,5 @@ public class VendingMachineTest {
         Optional<Tray> trayDetails = machine.trayDetailsAtPosition(1, 2);
         assertFalse(trayDetails.isPresent());
     }
+
 }

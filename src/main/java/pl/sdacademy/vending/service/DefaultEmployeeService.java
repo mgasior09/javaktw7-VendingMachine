@@ -1,6 +1,7 @@
 package pl.sdacademy.vending.service;
 
 import pl.sdacademy.vending.controller.services.EmployeeService;
+import pl.sdacademy.vending.model.Product;
 import pl.sdacademy.vending.model.Tray;
 import pl.sdacademy.vending.model.VendingMachine;
 import pl.sdacademy.vending.service.repositories.VendingMachineRepository;
@@ -32,15 +33,35 @@ public class DefaultEmployeeService implements EmployeeService {
 
     @Override
     public String removeTray(String symbol) {
-        VendingMachine machine = vendingMachineRepository.load().orElse(new VendingMachine(configuration));
-        Optional<Tray> trayToRemove = machine.removeTrayWithSymbol(symbol);
-        vendingMachineRepository.save(machine);
-        if (trayToRemove.isPresent()) {
-            return null;
+        Optional<VendingMachine> loadedMachine = vendingMachineRepository.load();
+        if (loadedMachine.isPresent()) {
+            VendingMachine machine = loadedMachine.get();
+            Optional<Tray> trayToRemove = machine.removeTrayWithSymbol(symbol);
+            if (trayToRemove.isPresent()) {
+                vendingMachineRepository.save(machine);
+                return null;
+            } else {
+                return "Could not remove tray with symbol " + symbol;
+            }
         } else {
-            return "Could not remove tray with symbol " + symbol;
+            return "No machine configured - try add tray first";
         }
     }
 
+    @Override
+    public String addProducts(String symbol, String productName, Integer amount) {
+        Optional<VendingMachine> loadedMachine = vendingMachineRepository.load();
+        if (loadedMachine.isPresent()) {
+            VendingMachine machine = loadedMachine.get();
+            for (int i = 0; i < amount; i++) {
+                Product product = new Product(productName);
+                machine.addProductsToTray(symbol, product);
+            }
+            vendingMachineRepository.save(machine);
+            return null;
+        } else {
+            return "No machine configured";
+        }
+    }
 
 }

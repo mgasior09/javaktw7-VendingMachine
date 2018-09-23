@@ -41,11 +41,11 @@ public class VendingMachine implements Serializable {
         int calculatedPrice = generatedPrice + 100;
         double productProbability = Math.random();
         if (productProbability < 0.1) {
-            Product product1 = Product.builder("Product " + symbol).build();
-            Product product2 = Product.builder("Product " + symbol).build();
+            Product product1 = new Product("Product " + symbol);
+            Product product2 = new Product("Product " + symbol);
             return Tray.builder(symbol).setPrice((long) calculatedPrice).setProducts(product1).setProducts(product2).build();
         } else if (productProbability < 0.5) {
-            Product product1 = Product.builder("Product " + symbol).build();
+            Product product1 = new Product("Product " + symbol);
             return Tray.builder(symbol).setPrice((long) calculatedPrice).setProducts(product1).build();
         }
         return Tray.builder(symbol).setPrice((long) calculatedPrice).build();
@@ -125,6 +125,11 @@ public class VendingMachine implements Serializable {
         Optional<Tray> optionalTray = getTrayForSymbol(symbol);
         trays[rowNumber][colNumber] = null;
         return optionalTray;
+    }
+
+    public void addProductsToTray(String symbol, Product product) {
+        Optional<Tray> optionalTray = getTrayForSymbol(symbol);
+        optionalTray.ifPresent(tray -> tray.addProduct(product));
     }
 }
 

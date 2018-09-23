@@ -10,6 +10,7 @@ public class Tray implements Serializable {
     private String traySymbol;
     private Long price;
     private Queue<Product> products;
+    private int countProducts;
 
     private Tray(Builder builder) {
         this.traySymbol = builder.traySymbol;
@@ -19,6 +20,15 @@ public class Tray implements Serializable {
 
     public static Builder builder(String traySymbol) {
         return new Builder(traySymbol);
+    }
+
+    public boolean addProduct(Product product) {
+        if (products.size() < 10) {
+            products.add(product);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public String getTraySymbol() {
@@ -36,7 +46,7 @@ public class Tray implements Serializable {
     }
 
     public Optional<Product> getFirstProduct() {
-        return Optional.ofNullable(products.poll());
+            return Optional.ofNullable(products.poll());
     }
 
     public static class Builder {
