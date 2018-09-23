@@ -80,10 +80,12 @@ public class CustomerOperationController {
         Optional<VendingMachine> optionalMachine = vendingMachineRepository.load();
         if (optionalMachine.isPresent()) {
             VendingMachine machine = optionalMachine.get();
-            return machine.buyProductWithSymbol(traySymbol);
+            Optional<Product> boughtProduct = machine.buyProductWithSymbol(traySymbol);
+            vendingMachineRepository.save(machine);
+            return boughtProduct;
         } else {
             return Optional.empty();
         }
-     // return   optionalMachine.map(machine -> machine.buyProductWithSymbol(traySymbol)).orElseGet(Optional::empty);   <- na pamiątkę xD
+        // return   optionalMachine.map(machine -> machine.buyProductWithSymbol(traySymbol)).orElseGet(Optional::empty);   <- na pamiątkę xD
     }
 }

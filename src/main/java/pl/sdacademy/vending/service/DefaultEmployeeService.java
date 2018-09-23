@@ -6,6 +6,8 @@ import pl.sdacademy.vending.model.VendingMachine;
 import pl.sdacademy.vending.service.repositories.VendingMachineRepository;
 import pl.sdacademy.vending.util.Configuration;
 
+import java.util.Optional;
+
 public class DefaultEmployeeService implements EmployeeService {
 
     private final VendingMachineRepository vendingMachineRepository;
@@ -27,4 +29,18 @@ public class DefaultEmployeeService implements EmployeeService {
             return "Could not add tray with symbol " + tray.getTraySymbol();
         }
     }
+
+    @Override
+    public String removeTray(String symbol) {
+        VendingMachine machine = vendingMachineRepository.load().orElse(new VendingMachine(configuration));
+        Optional<Tray> trayToRemove = machine.removeTrayWithSymbol(symbol);
+        vendingMachineRepository.save(machine);
+        if (trayToRemove.isPresent()) {
+            return null;
+        } else {
+            return "Could not remove tray with symbol " + symbol;
+        }
+    }
+
+
 }

@@ -154,6 +154,22 @@ public class VendingMachineTest {
 
         //than
         assertFalse(placementResult);
+    }
 
+    @Test
+    public void shouldRemoveExistingTray() {
+        //given
+        VendingMachine machine = new VendingMachine(PropertiesFileConfiguration.getInstance());
+        Tray tray = Tray.builder("B3").build();
+
+        //when
+        machine.placeTray(tray);
+        Optional<Tray> removedTray = machine.removeTrayWithSymbol("B3");
+
+        //than
+        assertTrue(removedTray.isPresent());
+        assertEquals("B3", removedTray.get().getTraySymbol());
+        Optional<Tray> trayDetails = machine.trayDetailsAtPosition(1, 2);
+        assertFalse(trayDetails.isPresent());
     }
 }

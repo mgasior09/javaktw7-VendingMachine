@@ -8,7 +8,6 @@ import java.util.Random;
 
 public class VendingMachine implements Serializable {
     public static final long serialVersionUID = 1L;
-    private final Configuration configuration;
     private final Tray[][] trays;
     private final Long maxRowsSize;
     private final Long maxColsSize;
@@ -19,7 +18,6 @@ public class VendingMachine implements Serializable {
         if (maxRowsSize > 26L || maxRowsSize < 1L || maxColsSize > 9L || maxColsSize < 1L) {
             throw new IllegalArgumentException();
         }
-        this.configuration = configuration;
         trays = new Tray[maxRowsSize.intValue()][maxColsSize.intValue()];
     }
 
@@ -58,13 +56,11 @@ public class VendingMachine implements Serializable {
     }
 
     public Long rowsSize() {
-        Long property = configuration.getProperty("machine.size.rows", 6L);
-        return property;
+        return maxRowsSize;
     }
 
     public Long colsSize() {
-        Long property = configuration.getProperty("machine.size.cols", 4L);
-        return property;
+        return maxColsSize;
     }
 
     public Optional<Tray> trayDetailsAtPosition(int rowNumber, int colNumber) {
@@ -121,6 +117,14 @@ public class VendingMachine implements Serializable {
             return false;
         }
         return false;
+    }
+
+    public Optional<Tray> removeTrayWithSymbol(String symbol) {
+        int colNumber = getColNumberForSymbol(symbol);
+        int rowNumber = getRowNumberForSymbol(symbol);
+        Optional<Tray> optionalTray = getTrayForSymbol(symbol);
+        trays[rowNumber][colNumber] = null;
+        return optionalTray;
     }
 }
 
