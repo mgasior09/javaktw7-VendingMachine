@@ -1,16 +1,13 @@
 package pl.sdacademy.vending.model;
 
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.Optional;
-import java.util.Queue;
+import java.util.*;
 
 public class Tray implements Serializable {
     public static final long serialVersionUID = 1L;
     private String traySymbol;
     private Long price;
     private Queue<Product> products;
-    private int countProducts;
 
     private Tray(Builder builder) {
         this.traySymbol = builder.traySymbol;
@@ -46,7 +43,15 @@ public class Tray implements Serializable {
     }
 
     public Optional<Product> getFirstProduct() {
-            return Optional.ofNullable(products.poll());
+        return Optional.ofNullable(products.poll());
+    }
+
+    public List<Product> purge() {
+        List<Product> removedProducts = new ArrayList<>();
+        while (!products.isEmpty()) {
+            removedProducts.add(products.poll());
+        }
+        return removedProducts;
     }
 
     public static class Builder {

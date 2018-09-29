@@ -88,7 +88,7 @@ public class VendingMachine implements Serializable {
         }
     }
 
-    private Optional<Tray> getTrayForSymbol(String traySymbol) {
+    public Optional<Tray> getTrayForSymbol(String traySymbol) {
         return trayDetailsAtPosition(getRowNumberForSymbol(traySymbol), getColNumberForSymbol(traySymbol));
     }
 
@@ -131,6 +131,8 @@ public class VendingMachine implements Serializable {
         Optional<Tray> optionalTray = getTrayForSymbol(symbol);
         optionalTray.ifPresent(tray -> tray.addProduct(product));
     }
+
+
 }
 
 

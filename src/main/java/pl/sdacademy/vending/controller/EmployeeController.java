@@ -16,50 +16,64 @@ public class EmployeeController {
     public void addTray() {
         System.out.print("New tray symbol: ");
         String providedSymbol = getStringUserInput();
+
         System.out.print("New tray price: ");
         String providedPrice = getStringUserInput();
         Long convertedPrice = (long) (Double.parseDouble(providedPrice) * 100);
+
         Tray tray = Tray.builder(providedSymbol).setPrice(convertedPrice).build();
+
         String errorMessage = employeeService.addTray(tray);
-        if (errorMessage != null) {
-            System.out.println(errorMessage);
-        } else {
-            System.out.println("Tray added.");
-        }
+        printErrorMessage(errorMessage, "Tray added");
     }
 
     public void removeTray() {
-        System.out.print("Select tray to remove ");
-        String providedSymbol = getStringUserInput();
-        try {
-            String errorMessage = employeeService.removeTray(providedSymbol);
-            if (errorMessage != null) {
-                System.out.println(errorMessage);
-            } else {
-                System.out.println("Tray removed");
-            }
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Invalid tray symbol");
+        System.out.print("Removed tray symbol: ");
+        String userProvidedSymbol = getStringUserInput();
+        String message = employeeService.removeTray(userProvidedSymbol);
+        printErrorMessage(message, "Tray removed");
+    }
+
+    public void addProducts() {
+        printErrorMessage(
+                employeeService.addProducts(
+                        askUserForString("Tray symbol: "),
+                        askUserForString("Product name: "),
+                        askUserForInteger("Amount: ")),
+                "Products were added");
+    }
+
+    private void printErrorMessage(
+            String errorMessage, String confirmationMessage) {
+        if (errorMessage != null) {
+            System.out.println(errorMessage);
+        } else {
+            System.out.println(confirmationMessage);
         }
     }
 
-    public void addProduct() {
-        System.out.print("Choose tray to add products ");
-        String providedSymbol = getStringUserInput();
-        System.out.print("Provide product name  ");
-        String providedProductName = getStringUserInput();
-        System.out.print("Provide amount  ");
-        String providedAmount = getStringUserInput();
-        Integer amount = Integer.parseInt(providedAmount);
-        String message = employeeService.addProducts(providedSymbol, providedProductName, amount);
-        if (message == null) {
-            System.out.println("Products added");
-        } else {
-            System.out.println(message);
-        }
+    private String askUserForString(String question) {
+        System.out.print(question);
+        return getStringUserInput();
     }
 
     private String getStringUserInput() {
         return scanner.nextLine();
+    }
+
+    private Integer askUserForInteger(String question) {
+        System.out.print(question);
+        return getIntegerUserInput();
+    }
+
+    private Integer getIntegerUserInput() {
+        String value = scanner.nextLine();
+        return Integer.parseInt(value);
+    }
+
+    public void removeProducts() {
+        String symbol = askUserForString("Which tray should be emptied: ");
+        String message = employeeService.emptyTray(symbol);
+        printErrorMessage(message, "Tray emptied");
     }
 }

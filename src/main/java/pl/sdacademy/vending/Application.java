@@ -68,9 +68,10 @@ public class Application {
                     employeeController.removeTray();
                     break;
                 case 3:
-                    employeeController.addProduct();
+                    employeeController.addProducts();
                     break;
                 case 4:
+                    employeeController.removeProducts();
                     break;
                 case 5:
                     break;
